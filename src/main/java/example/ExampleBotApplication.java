@@ -8,12 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.profile.UserProfileResponse;
+import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
+import com.sun.corba.se.impl.protocol.giopmsgheaders.ReplyMessage;
 
 @SpringBootApplication
 @LineMessageHandler
@@ -26,12 +29,12 @@ public class ExampleBotApplication {
     }
 
     @EventMapping
-    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
+    public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
         TextMessageContent message = event.getMessage();
-        return handleTextContent(event.getReplyToken(), event, message);
+        handleTextContent(event.getReplyToken(), event, message);
     }
 
-    private TextMessage handleTextContent(String replyToken, Event event, TextMessageContent content) {
+    private void handleTextContent(String replyToken, Event event, TextMessageContent content) {
         String originalText = content.getText();
         String text = originalText.toLowerCase();
 
@@ -41,22 +44,26 @@ public class ExampleBotApplication {
             final String statusMessage;
             lineMessagingClient
                 .getProfile(userId)
-                .whenComplete((userProfile, throwable) -> replyProfile(userProfile));
+                .whenComplete((userProfile, throwable) -> replyProfile(replyToken, userProfile));
         }
-        else {
-            return replyDefault(originalText);
-        }
+        else replyDefault(replyToken, originalText);
     }
 
-    private TextMessage replyProfile(UserProfileResponse userProfile) {
+    private void replyProfile(String replyToken, UserProfileResponse userProfile) {
         String displayName = userProfile.getDisplayName();
         String statusMessage = userProfile.getStatusMessage(); 
         String reply = displayName + "\nStatus : " + statusMessage;
-        return new TextMessage(reply);
+
+        List<Message> messages;
+        messages.add(new Message(reply));
+        lineMessagingClient.replyMessage(new ReplyMessage(replyToken, message));
     }
 
-    private TextMessage replyDefault(String originalText) {
+    private void replyDefault(String replyToken, String originalText) {
         String reply = originalText + " - ExampleBot";
-        return new TextMessage(reply);
+
+        List<Message> messages;
+        messages.add(new Message(reply));
+        lineMessagingClient.replyMessage(new ReplyMessage(replyToken, message));
     }
 }
