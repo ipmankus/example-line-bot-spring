@@ -17,7 +17,6 @@ import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
-import com.sun.corba.se.impl.protocol.giopmsgheaders.ReplyMessage;
 
 @SpringBootApplication
 @LineMessageHandler
