@@ -36,8 +36,8 @@ public class ExampleBotApplication {
 
         if (text == "profile") {
             String userId = event.getSource().getUserId();
-            String displayName;
-            String statusMessage;
+            final String displayName;
+            final String statusMessage;
             lineMessagingClient
                 .getProfile(userId)
                 .whenComplete((userProfile, throwable) -> {
