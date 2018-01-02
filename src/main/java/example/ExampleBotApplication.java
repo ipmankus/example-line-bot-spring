@@ -43,7 +43,9 @@ public class ExampleBotApplication {
                 .getProfile(userId)
                 .whenComplete((userProfile, throwable) -> replyProfile(userProfile));
         }
-        else return replyDefault(originalText);
+        else {
+            return replyDefault(originalText);
+        }
     }
 
     private TextMessage replyProfile(UserProfileResponse userProfile) {
