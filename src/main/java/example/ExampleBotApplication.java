@@ -38,7 +38,7 @@ public class ExampleBotApplication {
             String statusMessage = userProfile.getStatusMessage();
 
             String reply = displayName + "\nStatus : " + statusMessage;
-            return new TextMessage(reply)
+            return new TextMessage(reply);
         }        
     }
 }
