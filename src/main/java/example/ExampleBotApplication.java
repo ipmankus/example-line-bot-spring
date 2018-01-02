@@ -37,13 +37,13 @@ public class ExampleBotApplication {
 
         if (text == "profile") {
             String userId = event.getSource().getUserId();
-            String displayName;
-            String statusMessage;
+            final String displayName;
+            final String statusMessage;
             lineMessagingClient
                 .getProfile(userId)
                 .whenComplete((userProfile, throwable) -> {
-                    this.displayName = userProfile.getDisplayName();
-                    this.statusMessage = userProfile.getStatusMessage();
+                    displayName = userProfile.getDisplayName();
+                    statusMessage = userProfile.getStatusMessage();
                 });
             String reply = displayName + "\nStatus : " + statusMessage;
             return new TextMessage(reply);
