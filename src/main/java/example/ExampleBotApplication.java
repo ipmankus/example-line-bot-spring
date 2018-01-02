@@ -1,6 +1,7 @@
 package example;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.List;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -55,15 +56,15 @@ public class ExampleBotApplication {
         String reply = displayName + "\nStatus : " + statusMessage;
 
         List<Message> messages;
-        messages.add(new Message(reply));
-        lineMessagingClient.replyMessage(new ReplyMessage(replyToken, message));
+        messages.add(new TextMessage(reply));
+        lineMessagingClient.replyMessage(new ReplyMessage(replyToken, messages));
     }
 
     private void replyDefault(String replyToken, String originalText) {
         String reply = originalText + " - ExampleBot";
 
         List<Message> messages;
-        messages.add(new Message(reply));
-        lineMessagingClient.replyMessage(new ReplyMessage(replyToken, message));
+        messages.add(new TextMessage(reply));
+        lineMessagingClient.replyMessage(new ReplyMessage(replyToken, messages));
     }
 }
