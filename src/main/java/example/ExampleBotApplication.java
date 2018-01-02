@@ -32,7 +32,8 @@ public class ExampleBotApplication {
     }
 
     private TextMessage handleTextContent(String replyToken, Event event, TextMessageContent content) {
-        String text = content.getText().toLowerCase();
+        String originalText = content.getText();
+        String text = originalText.toLowerCase();
 
         if (text == "profile") {
             String userId = event.getSource().getUserId();
@@ -47,6 +48,7 @@ public class ExampleBotApplication {
 
             String reply = displayName + "\nStatus : " + statusMessage;
             return new TextMessage(reply);
-        }        
+        }
+        else return new TextMessage(originalText + " - ExampleBot");
     }
 }
