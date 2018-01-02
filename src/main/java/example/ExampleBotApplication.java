@@ -39,7 +39,7 @@ public class ExampleBotApplication {
         String originalText = content.getText();
         String text = originalText.toLowerCase();
 
-        if (text == "profile") {
+        if (text.equals("profile")) {
             String userId = event.getSource().getUserId();
             final String displayName;
             final String statusMessage;
