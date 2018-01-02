@@ -39,15 +39,17 @@ public class ExampleBotApplication {
             String userId = event.getSource().getUserId();
             final String displayName;
             final String statusMessage;
-            lineMessagingClient
+            String reply = lineMessagingClient
                 .getProfile(userId)
-                .whenComplete((userProfile, throwable) -> {
-                    displayName = userProfile.getDisplayName();
-                    statusMessage = userProfile.getStatusMessage();
-                });
-            String reply = displayName + "\nStatus : " + statusMessage;
+                .whenComplete((userProfile, throwable) -> replyProfile());
             return new TextMessage(reply);
         }
         else return new TextMessage(originalText + " - ExampleBot");
+    }
+
+    private String replyProfile(UserProfileResponse userProfile) {
+        String displayName = userProfile.getDisplayName();
+        String statusMessage = userProfile.getStatusMessage(); 
+        return displayName + "\nStatus : " + statusMessage;
     }
 }
