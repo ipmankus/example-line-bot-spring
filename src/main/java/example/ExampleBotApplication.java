@@ -18,7 +18,7 @@ public class ExampleBotApplication {
     }
 
     @EventMapping
-    public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
+    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
         String message = event.getMessage().getText();
         String reply = message + " - ExampleBot";
         return new TextMessage(reply);
