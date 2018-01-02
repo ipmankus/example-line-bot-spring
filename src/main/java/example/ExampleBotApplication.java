@@ -1,5 +1,7 @@
 package example;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +31,12 @@ public class ExampleBotApplication {
         handleTextContent(event.getReplyToken(), event, message);
     }
 
-    private TextMessage handleTextContent(String replyToken, javafx.event.Event event, TextMessageContent content) {
+    private TextMessage handleTextContent(String replyToken, Event event, TextMessageContent content) {
         String text = content.getText().toLowerCase();
 
         if (text == "profile") {
             String userId = event.getSource().getUserId();
-            UserProfileResponse userProfile = lineMessagingClient.getProfile(userId);
+            CompletableFuture<UserProfileResponse> userProfile = lineMessagingClient.getProfile(userId);
             String displayName = userProfile.getDisplayName();
             String statusMessage = userProfile.getStatusMessage();
 
