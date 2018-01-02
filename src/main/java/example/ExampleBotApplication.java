@@ -26,12 +26,12 @@ public class ExampleBotApplication {
     }
 
     @EventMapping
-    public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
+    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
         TextMessageContent message = event.getMessage();
-        handleTextContent(event.getReplyToken(), event, message);
+        return handleTextContent(event.getReplyToken(), event, message);
     }
 
-    private void handleTextContent(String replyToken, Event event, TextMessageContent content) {
+    private TextMessage handleTextContent(String replyToken, Event event, TextMessageContent content) {
         String originalText = content.getText();
         String text = originalText.toLowerCase();
 
@@ -43,7 +43,7 @@ public class ExampleBotApplication {
                 .getProfile(userId)
                 .whenComplete((userProfile, throwable) -> replyProfile(userProfile));
         }
-        else replyDefault(originalText);
+        else return replyDefault(originalText);
     }
 
     private TextMessage replyProfile(UserProfileResponse userProfile) {
