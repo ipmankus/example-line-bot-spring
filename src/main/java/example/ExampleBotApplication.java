@@ -36,9 +36,14 @@ public class ExampleBotApplication {
 
         if (text == "profile") {
             String userId = event.getSource().getUserId();
-            CompletableFuture<UserProfileResponse> userProfile = lineMessagingClient.getProfile(userId);
-            String displayName = userProfile.getDisplayName();
-            String statusMessage = userProfile.getStatusMessage();
+            String displayName;
+            String statusMessage;
+            lineMessagingClient
+                .getProfile(userId)
+                .whenComplete((userProfile, throwable) -> {
+                    displayName = userProfile.getDisplayName();
+                    statusMessage = userProfile.getStatusMessage();
+                });
 
             String reply = displayName + "\nStatus : " + statusMessage;
             return new TextMessage(reply);
