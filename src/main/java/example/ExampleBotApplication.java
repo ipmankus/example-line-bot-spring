@@ -41,7 +41,7 @@ public class ExampleBotApplication {
             final String statusMessage;
             String reply = lineMessagingClient
                 .getProfile(userId)
-                .whenComplete((userProfile, throwable) -> replyProfile());
+                .whenComplete((userProfile, throwable) -> replyProfile(userProfile));
             return new TextMessage(reply);
         }
         else return new TextMessage(originalText + " - ExampleBot");
